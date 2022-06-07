@@ -56,7 +56,7 @@ export default function ({ navigation, route }) {
 
   const renderItem = ({ item }) => (
     <TouchableOpacity
-      // onPress={() => navigation.navigate('ListDetail', item)}
+      onPress={() => navigation.navigate('ListDetail', item)}
       style={{
         padding: 10,
         margin: 10,
@@ -87,10 +87,10 @@ export default function ({ navigation, route }) {
             fontSize: windowWidth / 30,
             color: colors.white,
             paddingHorizontal: 10,
-            backgroundColor: item.status_transaksi == "OPEN" ? colors.danger : item.status_transaksi == "EXPIRED" ? colors.border : colors.success,
+            backgroundColor: item.status == "OPEN" ? colors.danger : item.status == "EXPIRED" ? colors.border : colors.success,
             fontFamily: fonts.secondary[600],
           }}>
-          {item.status_transaksi}
+          {item.status}
         </Text>
       </View>
 
@@ -119,9 +119,9 @@ export default function ({ navigation, route }) {
             style={{
               fontSize: windowWidth / 30,
               textAlign: 'center',
-              color: colors.primary,
+              color: colors.black,
             }}>
-            {item.posisi}
+            {item.telepon}
           </Text>
         </View>
 
@@ -134,22 +134,31 @@ export default function ({ navigation, route }) {
           }}>
           <Text
             style={{
-              fontSize: windowWidth / 30,
+              fontSize: windowWidth / 25,
               fontFamily: fonts.secondary[600],
-              color: colors.primary,
+              color: colors.black,
               paddingHorizontal: 10,
             }}>
-            Laptop
+            {item.total_qty} kg
           </Text>
+
+        </View>
+        <View
+          style={{
+            alignItems: 'flex-end',
+            justifyContent: 'center',
+
+            flex: 1,
+          }}>
           <Text
             style={{
               fontSize: windowWidth / 25,
               fontFamily: fonts.secondary[600],
-              textAlign: 'center',
               color: colors.secondary,
             }}>
-            {item.nama_laptop}
+            {new Intl.NumberFormat().format(item.total_harga)}
           </Text>
+
         </View>
       </View>
     </TouchableOpacity>

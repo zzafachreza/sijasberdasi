@@ -1,6 +1,6 @@
 export const colors = {
-  primary: '#5CAB3F',
-  secondary: '#FFA00A',
+  primary: '#3FCE72',
+  secondary: '#FD842B',
   tertiary: '#CECECE',
   background: '#6B63FF',
   success: '#198754',
@@ -8,7 +8,7 @@ export const colors = {
   danger: '#dc3545',
   black: 'black',
   white: 'white',
-  border: '#7D8797',
+  border: '#CECECE',
   zavalabs: '#CECECE',
   zavalabs2: '#F5F5F5',
   zavalabs2: '#E8E8E8'

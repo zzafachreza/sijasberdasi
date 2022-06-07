@@ -54,6 +54,7 @@ import {
   Add2,
   AddSatu,
   AddDua,
+  Kuis,
 } from '../pages';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { BottomNavigator } from '../components';
@@ -182,6 +183,31 @@ export default function Router() {
         component={Login}
         options={{
           headerTitle: 'Login',
+          headerShown: false,
+
+          cardStyleInterpolator: ({ current, layouts }) => {
+            return {
+              cardStyle: {
+                transform: [
+                  {
+                    translateX: current.progress.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [layouts.screen.width, 0],
+                    }),
+                  },
+                ],
+              },
+            };
+          },
+        }}
+      />
+
+
+      <Stack.Screen
+        name="Kuis"
+        component={Kuis}
+        options={{
+          headerTitle: 'Kuis',
           headerShown: false,
 
           cardStyleInterpolator: ({ current, layouts }) => {

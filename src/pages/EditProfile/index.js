@@ -108,7 +108,7 @@ export default function EditProfile({ navigation, route }) {
         </Text>
         <Image
           source={{
-            uri: data.foto_user,
+            uri: !data.foto_user ? 'https://zavalabs.com/nogambar.jpg' : data.foto_user,
           }}
           style={{
             width: '100%',
@@ -224,19 +224,7 @@ export default function EditProfile({ navigation, route }) {
           }
         />
 
-        <MyGap jarak={10} />
-        <MyInput
-          label="Posisi"
-          iconname="ribbon-outline"
-          multiline={true}
-          value={data.posisi}
-          onChangeText={value =>
-            setData({
-              ...data,
-              posisi: value,
-            })
-          }
-        />
+
 
         <MyGap jarak={10} />
         <MyInput

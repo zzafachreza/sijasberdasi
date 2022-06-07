@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   StyleSheet,
   Text,
@@ -10,17 +10,17 @@ import {
   Image,
   TouchableOpacity,
 } from 'react-native';
-import {storeData, getData} from '../../utils/localStorage';
+import { storeData, getData } from '../../utils/localStorage';
 import axios from 'axios';
-import {colors} from '../../utils/colors';
-import {windowWidth, fonts} from '../../utils/fonts';
+import { colors } from '../../utils/colors';
+import { windowWidth, fonts } from '../../utils/fonts';
 
 const wait = timeout => {
   return new Promise(resolve => {
     setTimeout(resolve, timeout);
   });
 };
-export default function ({navigation, route}) {
+export default function ({ navigation, route }) {
   const [refreshing, setRefreshing] = React.useState(false);
   const [data, setData] = useState([]);
 
@@ -35,97 +35,52 @@ export default function ({navigation, route}) {
   }, []);
 
   const getDataBarang = () => {
-    axios.get('https://zavalabs.com/ekpp/api/barang.php').then(res => {
+    axios.get('https://sampah.zavalabs.com/api/1data_sampah.php').then(res => {
       setData(res.data);
     });
   };
 
-  const renderItem = ({item}) => (
+  const renderItem = ({ item }) => (
     <TouchableOpacity
       onPress={() => {
-        if (item.stok > 0) {
-          navigation.navigate('Pinjam', item);
-        } else {
-          alert('Maaf tidak bisa pinjam !');
-        }
+        navigation.navigate('Pinjam', item);
       }}
       style={{
-        padding: 10,
-        margin: 10,
-        backgroundColor: 'white',
-        elevation: 1,
+        flex: 1,
+        marginHorizontal: 2,
+        marginVertical: 10,
 
-        // height: 80,
-        flexDirection: 'row',
+        backgroundColor: 'white',
       }}>
-      <View
-        style={{
-          flex: 2,
-          justifyContent: 'center',
-        }}>
-        {item.stok > 0 && (
-          <Text
-            style={{
-              fontSize: windowWidth / 35,
-              color: colors.black,
-              fontFamily: fonts.secondary[400],
-            }}>
-            KLIK UNTUK PINJAM ALAT & BAHAN
-          </Text>
-        )}
-        <Image
-          source={{uri: item.foto}}
-          style={{width: 100, height: 100, resizeMode: 'contain'}}
-        />
+
+      <Image
+        source={{ uri: item.image }}
+        style={{ width: '100%', height: 150 }}
+      />
+
+      <View style={{
+        paddingVertical: 5,
+      }}>
         <Text
           style={{
             fontSize: windowWidth / 30,
             color: colors.primary,
             fontFamily: fonts.secondary[600],
           }}>
-          {item.nama_barang}
+          {item.nama_sampah}
         </Text>
-      </View>
-      <View
-        style={{
-          alignItems: 'center',
-          justifyContent: 'center',
+        <Text
+          style={{
+            fontSize: windowWidth / 25,
+            color: colors.black,
+            fontFamily: fonts.secondary[400],
+          }}>
+          Rp. {new Intl.NumberFormat().format(item.harga_sampah)} <Text style={{ color: colors.secondary, fontFamily: fonts.secondary[600] }}>/ Kg</Text>
+        </Text>
 
-          flex: 1,
-        }}>
-        {item.stok > 0 && (
-          <>
-            <Text
-              style={{
-                fontSize: 20,
-                fontFamily: 'Montserrat-Medium',
-                color: colors.black,
-              }}>
-              {item.stok}
-            </Text>
-            <Text
-              style={{
-                fontSize: 10,
-                textAlign: 'center',
-                color: colors.secondary,
-              }}>
-              Stock Available
-            </Text>
-          </>
-        )}
-        {item.stok == 0 && (
-          <>
-            <Text
-              style={{
-                fontSize: 10,
-                textAlign: 'center',
-                color: colors.primary,
-              }}>
-              Out of Stock
-            </Text>
-          </>
-        )}
       </View>
+
+
     </TouchableOpacity>
   );
 
@@ -140,9 +95,12 @@ export default function ({navigation, route}) {
       }
       style={{
         padding: 10,
+        backgroundColor: colors.white,
       }}>
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={data}
+        numColumns={2}
         renderItem={renderItem}
         keyExtractor={item => item.id}
       />

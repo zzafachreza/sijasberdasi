@@ -43,6 +43,9 @@ import Add from './Add';
 import Add2 from './Add2';
 import AddSatu from './AddSatu';
 import AddDua from './AddDua';
+import Kuis from './Kuis';
+
+
 
 
 
@@ -57,6 +60,7 @@ export {
   Add,
   Add2
   ,
+  Kuis,
   Asset,
   Jadwal,
   Pinjam,

@@ -1,4 +1,4 @@
-import React, {useRef, useState, useEffect} from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -8,19 +8,19 @@ import {
   ScrollView,
   TouchableOpacity,
 } from 'react-native';
-import {colors} from '../../utils/colors';
-import {fonts, windowWidth} from '../../utils/fonts';
-import {MyButton, MyGap} from '../../components';
+import { colors } from '../../utils/colors';
+import { fonts, windowHeight, windowWidth } from '../../utils/fonts';
+import { MyButton, MyGap } from '../../components';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
-import {Icon} from 'react-native-elements/dist/icons/Icon';
-import {Modalize} from 'react-native-modalize';
-import {showMessage} from 'react-native-flash-message';
-import {getData, storeData} from '../../utils/localStorage';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
+import { Modalize } from 'react-native-modalize';
+import { showMessage } from 'react-native-flash-message';
+import { getData, storeData } from '../../utils/localStorage';
 import axios from 'axios';
-import {useIsFocused} from '@react-navigation/native';
+import { useIsFocused } from '@react-navigation/native';
 
-export default function Pinjam({navigation, route}) {
+export default function Pinjam({ navigation, route }) {
   const item = route.params;
   navigation.setOptions({
     headerShown: false,
@@ -53,20 +53,21 @@ export default function Pinjam({navigation, route}) {
 
   const addToCart = () => {
     const kirim = {
-      id_member: user.id,
-      id_barang: item.id,
-      nama_barang: item.nama_barang,
+      fid_user: user.id,
+      fid_sampah: item.id,
+      harga: item.harga_sampah,
       qty: jumlah,
+      total: item.harga_sampah * jumlah
     };
     console.log('kirim tok server', kirim);
     axios
-      .post('https://zavalabs.com/ekpp/api/barang_add.php', kirim)
+      .post('https://sampah.zavalabs.com/api/1add_cart.php', kirim)
       .then(res => {
         console.log(res);
 
         showMessage({
           type: 'success',
-          message: 'Berhasil Melakukan Pinjaman',
+          message: 'Berhasil ditambahkan ke keranjang',
         });
         navigation.replace('MainApp');
         modalizeRef.current.close();
@@ -88,7 +89,7 @@ export default function Pinjam({navigation, route}) {
 
           flexDirection: 'row',
         }}>
-        <View style={{justifyContent: 'center'}}>
+        <View style={{ justifyContent: 'center' }}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
             style={{
@@ -99,14 +100,14 @@ export default function Pinjam({navigation, route}) {
             <Icon type="ionicon" name="arrow-back" color={colors.white} />
           </TouchableOpacity>
         </View>
-        <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+        <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
           <Text
             style={{
               fontFamily: fonts.secondary[600],
               fontSize: windowWidth / 20,
               color: colors.white,
             }}>
-            {item.nama_barang}
+            {item.nama_sampah}
           </Text>
         </View>
       </View>
@@ -115,48 +116,16 @@ export default function Pinjam({navigation, route}) {
           flex: 1,
         }}>
         <Image
-          resizeMode="contain"
+
           style={{
-            width: '100%',
-            aspectRatio: 1.5,
+            height: windowHeight / 2.5,
+            width: windowWidth
           }}
           source={{
-            uri: item.foto,
+            uri: item.image,
           }}
         />
-        <View style={{padding: 10}}>
-          {item.stok > 0 && (
-            <Text
-              style={{
-                alignSelf: 'flex-end',
-                textAlign: 'center',
-                backgroundColor: colors.secondary,
-                borderRadius: 5,
-                color: colors.white,
-                padding: 10,
-                width: 120,
-                fontFamily: fonts.secondary[600],
-              }}>
-              {item.stok} Available
-            </Text>
-          )}
 
-          {item.stok == 0 && (
-            <Text
-              style={{
-                alignSelf: 'flex-end',
-                textAlign: 'center',
-                backgroundColor: colors.secondary,
-                borderRadius: 5,
-                color: colors.white,
-                padding: 10,
-                width: 120,
-                fontFamily: fonts.secondary[600],
-              }}>
-              Kosong
-            </Text>
-          )}
-        </View>
         <View
           style={{
             backgroundColor: colors.white,
@@ -170,39 +139,43 @@ export default function Pinjam({navigation, route}) {
               style={{
                 fontFamily: fonts.secondary[600],
                 fontSize: windowWidth / 20,
+                color: colors.secondary,
+              }}>
+              Rp. {new Intl.NumberFormat().format(item.harga_sampah)}<Text style={{
+                fontFamily: fonts.secondary[600],
+                fontSize: windowWidth / 20,
+                color: colors.black,
+              }}>/Kg</Text>
+            </Text>
+            <Text
+              style={{
+                fontFamily: fonts.secondary[600],
+                fontSize: windowWidth / 20,
                 color: colors.primary,
               }}>
-              {item.nama_barang}
+              {item.nama_sampah}
             </Text>
           </View>
         </View>
       </View>
-      {item.stok > 0 && (
-        <MyButton
-          Icons="book"
-          fontWeight="bold"
-          radius={0}
-          title="PINJAM ALAT DAN BAHAN"
-          warna={colors.primary}
-          onPress={onOpen}
-        />
-      )}
 
-      {item.stok == 0 && (
-        <MyButton
-          fontWeight="bold"
-          radius={0}
-          title="MAAF TIDAK BISA PINJAM"
-          warna={colors.border}
-        />
-      )}
+      <MyButton
+        Icons="cart-outline"
+        fontWeight="bold"
+        radius={0}
+        title="JUAL SAMPAH INI"
+        warna={colors.primary}
+        onPress={onOpen}
+      />
+
+
       <Modalize
         withHandle={false}
-        scrollViewProps={{showsVerticalScrollIndicator: false}}
+        scrollViewProps={{ showsVerticalScrollIndicator: false }}
         snapPoint={275}
         HeaderComponent={
-          <View style={{padding: 10}}>
-            <View style={{flexDirection: 'row'}}>
+          <View style={{ padding: 10 }}>
+            <View style={{ flexDirection: 'row' }}>
               <View>
                 <Image
                   resizeMode="contain"
@@ -211,17 +184,17 @@ export default function Pinjam({navigation, route}) {
                     borderRadius: 20,
                     aspectRatio: 1,
                   }}
-                  source={{uri: item.foto}}
+                  source={{ uri: item.image }}
                 />
               </View>
-              <View style={{flex: 1, padding: 10, justifyContent: 'center'}}>
+              <View style={{ flex: 1, padding: 10, justifyContent: 'center' }}>
                 <Text
                   style={{
                     fontFamily: fonts.secondary[600],
                     fontSize: 20,
-                    color: colors.primary,
+                    color: colors.black,
                   }}>
-                  {item.nama_barang}
+                  Rp. {new Intl.NumberFormat().format(item.harga_sampah * jumlah)}
                 </Text>
               </View>
               <TouchableOpacity onPress={() => modalizeRef.current.close()}>
@@ -232,16 +205,16 @@ export default function Pinjam({navigation, route}) {
         }
         withHandle={false}
         ref={modalizeRef}>
-        <View style={{flex: 1, height: windowWidth / 2}}>
-          <View style={{padding: 10, flex: 1}}>
-            <View style={{flexDirection: 'row', marginTop: 20}}>
-              <View style={{flex: 1}}>
+        <View style={{ flex: 1, height: windowWidth / 2 }}>
+          <View style={{ padding: 10, flex: 1 }}>
+            <View style={{ flexDirection: 'row', marginTop: 20 }}>
+              <View style={{ flex: 1 }}>
                 <Text
                   style={{
                     fontFamily: fonts.secondary[600],
                     color: colors.black,
                   }}>
-                  Jumlah
+                  Jumlah (Kg)
                 </Text>
               </View>
               <View
@@ -254,9 +227,9 @@ export default function Pinjam({navigation, route}) {
                   onPress={() => {
                     jumlah == 1
                       ? showMessage({
-                          type: 'danger',
-                          message: 'Minimal pembelian 1 Pcs',
-                        })
+                        type: 'danger',
+                        message: 'Minimal penjualan 1 kg',
+                      })
                       : setJumlah(jumlah - 1);
                   }}
                   style={{
@@ -276,7 +249,7 @@ export default function Pinjam({navigation, route}) {
                     alignItems: 'center',
                   }}>
                   <Text
-                    style={{fontSize: 16, fontFamily: fonts.secondary[600]}}>
+                    style={{ fontSize: 16, fontFamily: fonts.secondary[600] }}>
                     {jumlah}
                   </Text>
                 </View>
@@ -284,9 +257,9 @@ export default function Pinjam({navigation, route}) {
                   onPress={() => {
                     jumlah >= item.stok
                       ? showMessage({
-                          type: 'danger',
-                          message: 'Pembelian melebihi batas !',
-                        })
+                        type: 'danger',
+                        message: 'Pembelian melebihi batas !',
+                      })
                       : setJumlah(jumlah + 1);
                   }}
                   style={{
@@ -303,19 +276,12 @@ export default function Pinjam({navigation, route}) {
               </View>
             </View>
 
-            {/* <MyButton
-              radius={20}
-              fontWeight="bold"
-              radius={0}
-              title="TAMBAH KERANJANG"
-              warna={colors.primary}
-              onPress={addToCart}
-            /> */}
-            <View style={{marginTop: 15}}>
+
+            <View style={{ marginTop: 15 }}>
               <TouchableOpacity
                 onPress={addToCart}
                 style={{
-                  backgroundColor: colors.primary,
+                  backgroundColor: colors.secondary,
                   borderRadius: 10,
                   padding: 15,
                   justifyContent: 'center',
@@ -327,7 +293,7 @@ export default function Pinjam({navigation, route}) {
                     fontSize: windowWidth / 22,
                     color: colors.white,
                   }}>
-                  PINJAM ALAT DAN BAHAN
+                  SIMPAN
                 </Text>
               </TouchableOpacity>
             </View>
