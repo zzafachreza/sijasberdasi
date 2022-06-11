@@ -45,27 +45,21 @@ export default function GetStarted({ navigation }) {
   }).start();
 
   return (
-    <SafeAreaView style={styles.page} resizeMode="cover">
-      {/* <StatusBar backgroundColor={colors.secondary} barStyle="light-content" /> */}
+    <ImageBackground style={styles.page} resizeMode="cover" source={require('../../assets/back.png')}>
+      <StatusBar backgroundColor={colors.secondary} barStyle="light-content" />
       <View
         style={{
           flex: 1,
           justifyContent: 'center',
           alignItems: 'center',
         }}>
-        <Image
-          source={require('../../assets/logo.png')}
-          style={{
-            resizeMode: 'contain',
-            aspectRatio: 0.4,
-          }}
-        />
+
       </View>
 
       <MyButton
         title="LOGIN"
         Icons="log-in-outline"
-        warna={colors.primary}
+        warna={colors.secondary}
         onPress={() => navigation.navigate('Login')}
       />
 
@@ -74,14 +68,16 @@ export default function GetStarted({ navigation }) {
       <MyButton
         title="REGISTER"
         iconColor={colors.white}
+        borderSize={1}
+        borderColor={colors.white}
         Icons="create-outline"
         colorText={colors.white}
-        warna={colors.secondary}
+        // warna={colors.white}
         onPress={() => navigation.navigate('Register')}
       />
 
       <Animated.View style={{ height: top }} />
-    </SafeAreaView>
+    </ImageBackground>
   );
 }
 

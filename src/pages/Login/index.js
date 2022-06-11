@@ -68,7 +68,7 @@ export default function Login({ navigation }) {
             } else {
               storeData('user', res.data);
               axios
-                .post('https://motekarpulsa.zavalabs.com/api/update_token.php', {
+                .post(urlAPI + 'update_token.php', {
                   id_member: res.data.id,
                   token: token,
                 })

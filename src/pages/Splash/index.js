@@ -8,6 +8,8 @@ import {
   SafeAreaView,
   Image,
   Animated,
+  StatusBar,
+  ActivityIndicator,
 } from 'react-native';
 import { colors } from '../../utils/colors';
 import { fonts } from '../../utils/fonts';
@@ -55,39 +57,27 @@ export default function Splash({ navigation }) {
   }, []);
 
   return (
-    <SafeAreaView style={styles.page}>
+    <ImageBackground style={styles.page} resizeMode="cover" source={require('../../assets/back.png')}>
+      <StatusBar backgroundColor={colors.secondary} barStyle="light-content" />
+
       <View
         style={{
+          justifyContent: 'flex-end',
+          alignItems: 'center',
           flex: 1,
-          backgroundColor: colors.white,
-          justifyContent: 'center',
-        }}>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
+          paddingBottom: 50,
 
-            // paddingBottom: windowHeight / 4,
-          }}>
-          <Animated.Image
-            source={require('../../assets/logo.png')}
-            style={{
-              resizeMode: 'contain',
-              // resizeMode: 'center',
-              height: 200,
-              aspectRatio: scaleLogo,
-            }}
-          />
-        </View>
+        }}>
+
+        <ActivityIndicator size="large" color={colors.secondary} />
 
       </View>
-    </SafeAreaView>
+    </ImageBackground >
   );
 }
 
 const styles = StyleSheet.create({
   page: {
-    backgroundColor: colors.white,
     flex: 1,
   },
   image: {
