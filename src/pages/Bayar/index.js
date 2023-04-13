@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   StyleSheet,
   Text,
@@ -9,23 +9,23 @@ import {
   Image,
 } from 'react-native';
 
-import {getData} from '../../utils/localStorage';
+import { getData } from '../../utils/localStorage';
 import axios from 'axios';
-import {SafeAreaView} from 'react-native-safe-area-context';
-import {MyButton, MyInput, MyGap, MyPicker} from '../../components';
-import {colors} from '../../utils/colors';
-import {TouchableOpacity, Swipeable} from 'react-native-gesture-handler';
-import {fonts} from '../../utils/fonts';
-import {useIsFocused} from '@react-navigation/native';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { MyButton, MyInput, MyGap, MyPicker } from '../../components';
+import { colors } from '../../utils/colors';
+import { TouchableOpacity, Swipeable } from 'react-native-gesture-handler';
+import { fonts } from '../../utils/fonts';
+import { useIsFocused } from '@react-navigation/native';
 import LottieView from 'lottie-react-native';
-import {Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import 'intl';
 import 'intl/locale-data/jsonp/en';
 
-import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
-import {showMessage} from 'react-native-flash-message';
+import { launchCamera, launchImageLibrary } from 'react-native-image-picker';
+import { showMessage } from 'react-native-flash-message';
 
-export default function Bayar({navigation, route}) {
+export default function Bayar({ navigation, route }) {
   const [data, setData] = useState(route.params);
 
   console.log('data dari bayar', data);
@@ -48,7 +48,7 @@ export default function Bayar({navigation, route}) {
       } else if (response.error) {
         console.log('Image Picker Error: ', response.error);
       } else {
-        let source = {uri: response.uri};
+        let source = { uri: response.uri };
         switch (xyz) {
           case 1:
             setData({
@@ -70,7 +70,7 @@ export default function Bayar({navigation, route}) {
       } else if (response.error) {
         console.log('Image Picker Error: ', response.error);
       } else {
-        let source = {uri: response.uri};
+        let source = { uri: response.uri };
         switch (xyz) {
           case 1:
             setData({
@@ -84,7 +84,7 @@ export default function Bayar({navigation, route}) {
     });
   };
 
-  const UploadFoto = ({onPress1, onPress2, label, foto}) => {
+  const UploadFoto = ({ onPress1, onPress2, label, foto }) => {
     return (
       <View
         style={{
@@ -170,7 +170,7 @@ export default function Bayar({navigation, route}) {
           padding: 10,
           flex: 1,
         }}>
-        <View style={{flex: 1}}>
+        <View style={{ flex: 1 }}>
           <View
             style={{
               flexDirection: 'row',
@@ -188,7 +188,7 @@ export default function Bayar({navigation, route}) {
             </Text>
             <Image
               source={require('../../assets/bca.png')}
-              style={{width: 100, height: 30, margin: 10}}
+              style={{ width: 100, height: 30, margin: 10 }}
             />
           </View>
           <View
@@ -294,7 +294,7 @@ export default function Bayar({navigation, route}) {
           source={require('../../assets/animation.json')}
           autoPlay
           loop
-          style={{backgroundColor: colors.primary}}
+          style={{ backgroundColor: colors.primary }}
         />
       )}
     </>

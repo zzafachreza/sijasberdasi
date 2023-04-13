@@ -106,7 +106,6 @@ export default function Register({ navigation }) {
 
   return (
     <ImageBackground
-      source={require('../../assets/back.jpeg')}
       style={{
         flex: 1,
 
